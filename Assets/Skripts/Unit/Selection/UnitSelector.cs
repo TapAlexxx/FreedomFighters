@@ -17,11 +17,15 @@ public class UnitSelector : MonoBehaviour
     public bool IsWithinSelectionBounds(Unit unit)
     {
         if (_isOnSelecting == false)
+        {
             return false;
+        }
 
-        var viewportBound = RectUtils.GetViewportBounds(_camera, _startMousePosition, Input.mousePosition);
-
-        return viewportBound.Contains(_camera.WorldToViewportPoint(unit.transform.position));
+        else
+        {
+            var viewportBound = RectUtils.GetViewportBounds(_camera, _startMousePosition, Input.mousePosition);
+            return viewportBound.Contains(_camera.WorldToViewportPoint(unit.transform.position));
+        }
     }
 
     private void Update()
@@ -39,7 +43,9 @@ public class UnitSelector : MonoBehaviour
         }
 
         if (Input.GetMouseButtonUp(0))
+        {
             SetNewSelectedUnits();
+        }
     }
 
     private void OnGUI()
@@ -59,21 +65,29 @@ public class UnitSelector : MonoBehaviour
         foreach (var selectableUnit in FindObjectsOfType<Unit>())
         {
             if (IsWithinSelectionBounds(selectableUnit))
+            {
                 _selectedUnits.Add(selectableUnit);
+            }
+
             else
+            {
                 continue;
+            }
         }
 
         UnitsSelected?.Invoke(_selectedUnits);
-
         _isOnSelecting = false;
     }
 
     private void DisablePreviousSelection()
     {
         foreach (var unit in FindObjectsOfType<Unit>())
+        {
             if (unit.OnSelectCircle.activeSelf == true)
+            {
                 unit.OnSelectCircle.SetActive(false);
+            }
+        }
     }
 
     private void SetCirclesOnHighlightedUnits()
@@ -81,9 +95,14 @@ public class UnitSelector : MonoBehaviour
         foreach (var unit in FindObjectsOfType<Unit>())
         {
             if (IsWithinSelectionBounds(unit))
+            {
                 unit.OnSelectCircle.SetActive(true);
+            }
+
             else
+            {
                 unit.OnSelectCircle.SetActive(false);
+            }
         }
     }
 }

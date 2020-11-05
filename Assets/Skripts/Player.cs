@@ -17,14 +17,11 @@ public class Player : MonoBehaviour
         MoneyCountChanged?.Invoke(_money);
     }
 
-    public void TryRecruitUnit(UnitStats unit)
+    public void RecruitUnit(UnitStats unit)
     {
-        if (_money >= unit.Price)
-        {
-            _money -= unit.Price;
-            MoneyCountChanged?.Invoke(_money);
-            UnitRecruited?.Invoke(unit.Prefab);
-        }
+        _money -= unit.Price;
+        MoneyCountChanged?.Invoke(_money);
+        UnitRecruited?.Invoke(unit.Prefab);
     }
 
     public void CollectMoney(int money)

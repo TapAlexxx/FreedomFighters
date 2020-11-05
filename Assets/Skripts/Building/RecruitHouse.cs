@@ -24,21 +24,26 @@ public class RecruitHouse : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.UnitRecruited += AddInQueue;
+        _player.UnitRecruited += OnUnitRecruited;
     }
 
     private void OnDisable()
     {
-        _player.UnitRecruited -= AddInQueue;
+        _player.UnitRecruited -= OnUnitRecruited;
     }
 
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && _controlPanel.activeSelf == true)
-            _player.TryRecruitUnit(_unit[0]);
+        {
+            _player.RecruitUnit(_unit[0]);
+        }
+
         if (Input.GetKeyDown(KeyCode.R) && _controlPanel.activeSelf == true)
-            _player.TryRecruitUnit(_unit[1]);
+        {
+            _player.RecruitUnit(_unit[1]);
+        }
 
         if (_timeFromLastRecruit >= _recruitTime && _unitsToRecruit.Count > 0)
         {
@@ -48,18 +53,27 @@ public class RecruitHouse : MonoBehaviour
             UnitsToRecruitCountChanged?.Invoke(_unitsToRecruit.Count);
         }
 
-        _timeFromLastRecruit += Time.deltaTime;
         if (_timeFromLastRecruit <= _recruitTime)
         {
             _normalizedRecruitingProgress = _timeFromLastRecruit / _recruitTime;
             ProgressChanged?.Invoke(_normalizedRecruitingProgress);
         }
+
+        _timeFromLastRecruit += Time.deltaTime;
+    }
+
+
+    private void OnUnitRecruited(GameObject unit)
+    {
+        AddInQueue(unit);
     }
 
     private void AddInQueue(GameObject unit)
     {
         if (_unitsToRecruit.Count < 1)
+        {
             _timeFromLastRecruit = 0;
+        }
 
         Unit recruitedUnit = unit.GetComponent<Unit>();
         _unitsToRecruit.Enqueue(recruitedUnit);

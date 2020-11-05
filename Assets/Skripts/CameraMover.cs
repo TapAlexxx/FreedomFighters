@@ -5,24 +5,17 @@ using UnityEngine;
 public class CameraMover : MonoBehaviour
 {
     [SerializeField] private float _cameraSpeed;
-    private float _axisX;
-    private float _axisY;
-    private float _axisZ;
+
+    private Vector3 _axis;
 
     private void Update()
     {
-        _axisX = Input.GetAxis("Horizontal");
+        _axis.x = Input.GetAxis("Horizontal");
+        _axis.y = Input.GetAxis("Vertical");
+        _axis.z = Input.GetAxis("Mouse ScrollWheel") * -50;
 
-        _axisY = Input.GetAxis("Vertical");
-
-        _axisZ = Input.GetAxis("Mouse ScrollWheel") * -50;
-
-        if (transform.position.x >= 37 && transform.position.x <= 240 &&
-            transform.position.y >= -167 && transform.position.y <= -147 &&
-            transform.position.z >= 127 && transform.position.z <= 163)
-        {
-            transform.Translate(new Vector3(_axisX, _axisZ, _axisY) * _cameraSpeed * Time.deltaTime);
-        }
+        if (transform.position.x >= 37 && transform.position.x <= 240 && transform.position.y >= -167 && transform.position.y <= -147 && transform.position.z >= 127 && transform.position.z <= 163)
+            transform.Translate(new Vector3(_axis.x, _axis.z, _axis.y) * _cameraSpeed * Time.deltaTime);
 
         if (transform.position.x < 37)
             transform.position = new Vector3(37, transform.position.y, transform.position.z);

@@ -26,11 +26,14 @@ public class RecruitHouseControlPanel : MonoBehaviour
 
     private void OnRecruitButtonClick(UnitStats unit)
     {
-        TryRecruitUnit(unit);
+        if (TryRecruitUnit(unit))
+        {
+            _player.RecruitUnit(unit);
+        }
     }
 
-    private void TryRecruitUnit(UnitStats unit)
+    private bool TryRecruitUnit(UnitStats unit)
     {
-        _player.TryRecruitUnit(unit);
+        return _player.Money >= unit.Price;
     }
 }

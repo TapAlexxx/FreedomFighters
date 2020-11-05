@@ -6,8 +6,8 @@ using UnityEngine;
 public class UnitMover : MonoBehaviour
 {
     public Enemy EnemyTarget { get; private set; }
-    public bool IsTargetReached;
 
+    private bool _isTargetReached;
     private Unit _unit;
     private float _moveSpeed;
     private Vector3 _targetPosition;
@@ -30,7 +30,7 @@ public class UnitMover : MonoBehaviour
         _unit = GetComponent<Unit>();
         _moveSpeed = _unit.MoveSpeed;
         _targetPosition = transform.position;
-        IsTargetReached = true;
+        _isTargetReached = true;
 
         _animator = GetComponent<Animator>();
     }
@@ -43,13 +43,15 @@ public class UnitMover : MonoBehaviour
             {
                 var heading = new Vector3(EnemyTarget.transform.position.x, transform.position.y, EnemyTarget.transform.position.z) - transform.position;
                 if (heading.sqrMagnitude < _unit.AttackRange * _unit.AttackRange)
-                    IsTargetReached = true;
+                {
+                    _isTargetReached = true;
+                }
             }
 
-            if (transform.position != _targetPosition && IsTargetReached == false)
+            if (transform.position != _targetPosition && _isTargetReached == false)
             {
                 MoveToTargetPosition(_targetPosition);
-                _animator.SetBool("IsTargetReached", IsTargetReached);
+                _animator.SetBool("IsTargetReached", _isTargetReached);
             }
             RotateToTargetPosition(_targetPosition);
         }
@@ -61,9 +63,9 @@ public class UnitMover : MonoBehaviour
 
         if (transform.position == _targetPosition)
         {
-            IsTargetReached = true;
+            _isTargetReached = true;
 
-            _animator.SetBool("IsTargetReached", IsTargetReached);
+            _animator.SetBool("IsTargetReached", _isTargetReached);
         }
     }
 
@@ -85,6 +87,6 @@ public class UnitMover : MonoBehaviour
         _targetPosition = targetPosition;
         EnemyTarget = enemyTarget;
 
-        IsTargetReached = false;
+        _isTargetReached = false;
     }
 }

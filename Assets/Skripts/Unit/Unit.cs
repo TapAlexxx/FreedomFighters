@@ -40,6 +40,7 @@ public class Unit : MonoBehaviour
     public void ApplyDamage(Enemy enemy)
     {
         _health -= enemy.Damage;
+
         if (_health <= 0)
         {
             IsAlive = false;

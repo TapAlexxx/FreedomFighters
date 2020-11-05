@@ -15,26 +15,30 @@ public class SelectedUnitsTargetSetter : MonoBehaviour
 
     private void OnEnable()
     {
-        _unitSelector.UnitsSelected += SetSelectedUnits;
+        _unitSelector.UnitsSelected += OnUnitsSelected;
     }
 
     private void OnDisable()
     {
-        _unitSelector.UnitsSelected -= SetSelectedUnits;
+        _unitSelector.UnitsSelected -= OnUnitsSelected;
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(1) && _selectedUnits != null)
+        {
             foreach (var unit in _selectedUnits)
             {
                 if (TrySetNewTargetPositionForUnit())
+                {
                     unit.ApplyNewTarget(_targetPosition, _enemyTarget);
+                }
             }
+        }
     }
 
 
-    private void SetSelectedUnits(List<Unit> selectedUnits)
+    private void OnUnitsSelected(List<Unit> selectedUnits)
     {
         _selectedUnits = selectedUnits;
     }
@@ -56,6 +60,7 @@ public class SelectedUnitsTargetSetter : MonoBehaviour
                     targetPositionSpread.y = 0;
                     _targetPosition = hit.point + targetPositionSpread;
                 }
+
                 else
                 {
                     _targetPosition = hit.point;
@@ -63,15 +68,23 @@ public class SelectedUnitsTargetSetter : MonoBehaviour
                 _enemyTarget = null;
                 return true;
             }
+
             else if (hit.collider.gameObject.TryGetComponent(out Enemy enemy))
             {
                 _enemyTarget = enemy;
                 _targetPosition = enemy.transform.position;
                 return true;
             }
-            else return false;
+
+            else
+            {
+                return false;
+            }
         }
+
         else
+        {
             return false;
+        }
     }
 }
