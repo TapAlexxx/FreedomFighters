@@ -12,7 +12,9 @@ public class Fireball : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
         if (transform.position == _targetPosition)
+        {
             Destroy(gameObject);
+        }
     }
 
     public void ApplyTarget(Unit unit)

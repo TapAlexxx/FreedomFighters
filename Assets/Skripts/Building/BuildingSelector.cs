@@ -12,6 +12,7 @@ public class BuildingSelector : MonoBehaviour
         {
             OpenBuilding();
         }
+
         if (Input.GetKeyDown(KeyCode.Escape) && _recruitControlPanels != null)
         {
             foreach (var panel in _recruitControlPanels)

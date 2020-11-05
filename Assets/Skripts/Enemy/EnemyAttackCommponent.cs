@@ -37,6 +37,7 @@ public class EnemyAttackCommponent : MonoBehaviour
                     _unitsInAttackRange.RemoveAt(i);
                     i--;
                 }
+
                 else
                 {
                     if (_unitsInAttackRange[i].IsAlive == true)
